@@ -6,14 +6,25 @@ pnj_list = {}
 
 function _init()
 	player = new_player(0,0)
+	add(pnj_list,new_pnj(1,52,52,nil))
+	add(pnj_list,new_pnj(2,60,52,0))
+	add(pnj_list,new_pnj(3,68,52,1))
+	add(pnj_list,new_pnj(1,56,68,2))
+	add(pnj_list,new_pnj(2,64,68,3))
 end
 
 function _update()
+	for pnj in all (pnj_list) do
+		update_pnj(pnj)
+	end
 	update_player(player)
 end
 
 function _draw()
 	cls()
+	for pnj in all (pnj_list) do
+		draw_pnj(pnj)
+	end
 	draw_player(player)
 end
 -->8
@@ -26,12 +37,13 @@ function new_actor(ispr,x,y)
 	a.ispr = ispr
 	a.spr = 1
 	a.d = 1
+	a.move = false
 	return a
 end
 
 function update_actor(a)
 	--move
-	if(btn(0) or btn(1) or btn(2) or btn(3))then
+	if(a.move)then
 		a.spr+=a.vspr
 		if(a.spr>=5) a.spr-=4
 	else
@@ -47,7 +59,7 @@ function draw_actor(a)
 end
 -->8
 function new_player(x,y)
-	return new_actor(2,x,y)
+	return new_actor(0,x,y)
 end
 
 function update_player(p)
@@ -71,11 +83,31 @@ function update_player(p)
 		p.x+=p.v
 		p.d = 1
 	end
+	if(btn(0) or btn(1) or btn(2) or btn(3))then
+		p.move = true
+	else
+		p.move = false
+	end
 	update_actor(p)
 end
 
 function draw_player(p)
 	draw_actor(p)
+end
+-->8
+function new_pnj(n,x,y,act)
+	local p = new_actor(n,x,y)
+	p.act = act
+	return p
+end
+
+function update_pnj(p)
+	update_actor(p)
+end
+
+function draw_pnj(p)
+	draw_actor(p)
+	if(p.act!=nil) spr(13+p.act,p.x,p.y-8)
 end
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
