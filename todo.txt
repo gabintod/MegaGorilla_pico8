@@ -1,0 +1,4 @@
+vente blé
+vente graines (garder 1 dans inventaire ou sur terrain)
+transformation blé en bière
+vente bière
